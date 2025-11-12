@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Search Results for "<%= keyword %>"</title>
+  <link rel="stylesheet" href="/styles.css">
+  <style>
+    table {
+      width: 60%;
+      margin: 20px auto;
+      border-collapse: collapse;
+    }
+    th, td {
+      padding: 8px 12px;
+      border: 1px solid #ccc;
+    }
+    th {
+      background-color: #f2f2f2;
+    }
+    h1 {
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <h1>Search Results for "<%= keyword %>"</h1>
+  
+  <% if (searchResults.length === 0) { %>
+    <p style="text-align:center;">No books found.</p>
+  <% } else { %>
+    <table>
+      <thead>
+        <tr>
+          <th>Book Name</th>
+          <th>Author</th>
+          <th>Price (£)</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% searchResults.forEach(function(book) { %>
+          <tr>
+            <td><%= book.name %></td>
+            <td><%= book.author %></td>
+            <td><%= book.price %></td>
+          </tr>
+        <% }) %>
+      </tbody>
+    </table>
+  <% } %>
+</body>
+</html>

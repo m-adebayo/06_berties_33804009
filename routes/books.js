@@ -6,10 +6,18 @@ router.get('/search',function(req, res, next){
     res.render("search.ejs")
 });
 
+
 router.get('/search-result', function (req, res, next) {
-    //searching in the database
-    res.send("You searched for: " + req.query.keyword)
+    let keyword = req.query.keyword;
+    let sqlquery = "SELECT * FROM books WHERE name LIKE ?";
+    let searchTerm = '%' + keyword + '%'; // matches any book containing the keyword
+    
+    db.query(sqlquery, [searchTerm], (err, result) => {
+        if (err) return next(err);
+        res.render("search-result.ejs", { searchResults: result, keyword: keyword });
+    });
 });
+
 
     router.get('/list', function(req, res, next) {
         let sqlquery = "SELECT * FROM books"; // query database to get all the books
@@ -39,6 +47,17 @@ router.post('/bookadded', function (req, res, next) {
     })
 })
 
+// List all books priced less than £20
+router.get('/bargainbooks', function(req, res, next) {
+    let sqlquery = "SELECT name, price FROM books WHERE price < 20";
+    db.query(sqlquery, (err, result) => {
+        if (err) {
+            next(err);
+        } else {
+            res.render("bargainbooks.ejs", { bargainBooks: result });
+        }
+    });
+});
 
 
 // Export the router object so index.js can access it
