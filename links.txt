@@ -1,1 +1,1 @@
-home=https://doc.gold.ac.uk/usr/412/books/list
+home=https://doc.gold.ac.uk/usr/412/
