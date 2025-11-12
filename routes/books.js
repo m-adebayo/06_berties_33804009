@@ -18,9 +18,27 @@ router.get('/search-result', function (req, res, next) {
             if (err) {
                 next(err)
             }
-            res.send(result)
-         });
+res.render("list.ejs", {availableBooks:result})         });
     });
+
+router.get('/addbook', function(req, res, next){
+    res.render('addbook.ejs');
+});
+
+router.post('/bookadded', function (req, res, next) {
+    // saving data in database
+    let sqlquery = "INSERT INTO books (name, price,author) VALUES (?,?,?)"
+    // execute sql query
+    let newrecord = [req.body.name, req.body.price, req.body.author]
+    db.query(sqlquery, newrecord, (err, result) => {
+        if (err) {
+            next(err)
+        }
+        else
+            res.send(req.body.name +' by '+ req.body.author +' has been added to the booklist. It costs '+ req.body.price)
+    })
+})
+
 
 
 // Export the router object so index.js can access it

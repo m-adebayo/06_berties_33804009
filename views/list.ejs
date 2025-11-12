@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Bertie's Books - List</title>
+  <link rel="stylesheet" href="/styles.css"> <!-- optional CSS -->
+  <style>
+    table {
+      width: 60%;
+      margin: 20px auto;
+      border-collapse: collapse;
+    }
+    th, td {
+      padding: 8px 12px;
+      border: 1px solid #ccc;
+      text-align: left;
+    }
+    th {
+      background-color: #f2f2f2;
+    }
+    h1 {
+      text-align: center;
+      color:rgb(37, 182, 182) ;
+    }
+    h2{
+        text-align: center;
+        color: rgb(102, 146, 175);
+    }
+  </style>
+</head>
+<body>
+  <h1>Bertie's Books Shop</h1>
+  <h2> Here are the books we sell</h2>
+  <table>
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Name</th>
+        <th>Price (£)</th>
+        <th>Author</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% availableBooks.forEach(function(book) { %>
+        <tr>
+          <td><%= book.id %></td>
+          <td><%= book.name %></td>
+          <td><%= book.price %></td>
+          <td><%= book.author %></td>
+        </tr>
+      <% }) %>
+    </tbody>
+  </table>
+</body>
+</html>
