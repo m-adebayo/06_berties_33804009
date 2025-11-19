@@ -8,3 +8,29 @@ To install and run:
 
 npm install
 node index.js
+
+To protect mySQL database password, I implemented an environment variable manangement using dotenv.
+
+How I implemented it:
+- Install dotennv
+  - Ran npm install dotenv
+
+- Create a .env file
+  - Stored all database credentials
+
+- Updated index.js
+  - Made it load the environment variables
+
+- Added .env to .gitignore
+  - Ensures senssetive information is stored outside the codebase
+
+I also added an audit log to enhance security
+
+How I implemented it:
+- Database setup
+  - Created a table called audit_log in mySQL
+    - Captured username, login status and the timestamp
+
+- Log
+- Inserts the successful logins with success
+- Inserts the failed logins with fail

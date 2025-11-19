@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Audit Log</title>
+    <link rel="stylesheet" href="/main.css">
+</head>
+<body>
+    <h1>Audit Log History</h1>
+
+    <table border="1" cellpadding="8">
+        <tr>
+            <th>Username</th>
+            <th>Status</th>
+            <th>Date / Time</th>
+        </tr>
+
+        <% audit.forEach(row => { %>
+            <tr>
+                <td><%= row.username %></td>
+                <td><%= row.status %></td>
+                <td><%= row.timestamp %></td>
+            </tr>
+        <% }) %>
+    </table>
+
+    <p><a href="/">Return to Home</a></p>
+</body>
+</html>
