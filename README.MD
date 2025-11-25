@@ -34,3 +34,8 @@ How I implemented it:
 - Log
 - Inserts the successful logins with success
 - Inserts the failed logins with fail
+
+Week 8 saw an update of ensuring that a user has logged in before accessing specific pages. These pages include:
+- Audit Log
+- User List
+- Adding a book

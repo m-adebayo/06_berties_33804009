@@ -1,19 +1,11 @@
 // Create a new router
 const express = require("express")
 const router = express.Router()
+const redirectLogin = (req,res,next) => req.app.locals.redirectLogin(req,res,next);
+
 
 const bcrypt = require('bcrypt')
 const saltRounds = 10
-
-const redirectLogin = (req, res, next) => {
-    if (!req.session.userId ) {
-      res.redirect('./login') // redirect to the login page
-    } else { 
-        next (); // move to the next middleware function
-    } 
-}
-
-
 
 router.get('/register', function (req, res, next) {
     res.render('register.ejs')
@@ -93,7 +85,9 @@ router.post('/loggedin', function (req,res,next){
             const auditSuccess = "INSERT INTO audit_log (username,status) VALUES (?,?)";
             db.query(auditSuccess, [username, 'success'])
             req.session.userId = req.body.username;
-            res.send("You have logged in, Welcome back, " + username);
+            res.send(`You have logged in, Welcome back, ${username}!<br><br>
+                <a href="/">Return to Home</a>`
+            );
       }
       else {
         const auditFail = "INSERT INTO audit_log (username,status) VALUES (?,?)";
