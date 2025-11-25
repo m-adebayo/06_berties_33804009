@@ -5,11 +5,21 @@ const router = express.Router()
 const bcrypt = require('bcrypt')
 const saltRounds = 10
 
+const redirectLogin = (req, res, next) => {
+    if (!req.session.userId ) {
+      res.redirect('./login') // redirect to the login page
+    } else { 
+        next (); // move to the next middleware function
+    } 
+}
+
+
+
 router.get('/register', function (req, res, next) {
     res.render('register.ejs')
 })
 
-router.get('/list', function(req, res, next) {
+router.get('/list', redirectLogin, function(req, res, next) {
     let sqlquery = "SELECT * FROM users"; // query database to get all the users
     // execute sql query
     db.query(sqlquery, (err, result) => {
@@ -23,7 +33,7 @@ router.get('/login', function (req,res,next){
     res.render('login.ejs')
 })
 
-router.get('/audit', function(req, res, next) {
+router.get('/audit', redirectLogin, function(req, res, next) {
     const sqlquery = "SELECT * FROM audit_log ORDER BY timestamp DESC";
     db.query(sqlquery, (err, result) => {
         if (err) return next(err);
@@ -82,6 +92,7 @@ router.post('/loggedin', function (req,res,next){
         if (same === true) {
             const auditSuccess = "INSERT INTO audit_log (username,status) VALUES (?,?)";
             db.query(auditSuccess, [username, 'success'])
+            req.session.userId = req.body.username;
             res.send("You have logged in, Welcome back, " + username);
       }
       else {
@@ -93,5 +104,15 @@ router.post('/loggedin', function (req,res,next){
 
     })
 });
+        router.get('/logout', redirectLogin, (req,res) => {
+        req.session.destroy(err => {
+        if (err) {
+          return res.redirect('/')
+        }
+        res.send('You are now logged out. <a href='+'/'+'>Home</a>');
+        })
+    })
+
+
 // Export the router object so index.js can access it
 module.exports = router
