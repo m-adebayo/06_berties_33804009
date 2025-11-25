@@ -2,6 +2,7 @@
 const express = require("express")
 const router = express.Router()
 const redirectLogin = (req,res,next) => req.app.locals.redirectLogin(req,res,next);
+const {check, validationResult} = require('express-validator');
 
 router.get('/search',function(req, res, next){
     res.render("search.ejs")
@@ -9,7 +10,7 @@ router.get('/search',function(req, res, next){
 
 
 router.get('/search-result', function (req, res, next) {
-    let keyword = req.query.keyword;
+    let keyword = req.sanitize(req.query.keyword).escape();
     let sqlquery = "SELECT * FROM books WHERE name LIKE ?";
     let searchTerm = '%' + keyword + '%'; // matches any book containing the keyword
     
@@ -30,15 +31,28 @@ router.get('/search-result', function (req, res, next) {
 res.render("list.ejs", {availableBooks:result})         });
     });
 
-router.get('/addbook', function(req, res, next){
+router.get('/addbook', redirectLogin, function(req, res, next){
     res.render('addbook.ejs');
 });
 
-router.post('/bookadded', function (req, res, next) {
+router.post('/bookadded',
+    [
+    check('name').notEmpty(),
+    check('price').notEmpty(),
+    check('author').notEmpty()
+],
+
+ function (req, res, next) {
+            const errors = validationResult(req);
+    if(!errors.isEmpty()){
+        res.render('./register')
+    }
+    else{
+
     // saving data in database
     let sqlquery = "INSERT INTO books (name, price,author) VALUES (?,?,?)"
     // execute sql query
-    let newrecord = [req.body.name, req.body.price, req.body.author]
+    let newrecord = [req.sanitize(req.body.name).escape(), req.sanitize(req.body.price).escape(), req.sanitize(req.body.author).escape()]
     db.query(sqlquery, newrecord, (err, result) => {
         if (err) {
             next(err)
@@ -46,7 +60,7 @@ router.post('/bookadded', function (req, res, next) {
         else
             res.send(req.body.name +' by '+ req.body.author +' has been added to the booklist. It costs '+ req.body.price)
     })
-})
+}})
 
 // List all books priced less than £20
 router.get('/bargainbooks', function(req, res, next) {

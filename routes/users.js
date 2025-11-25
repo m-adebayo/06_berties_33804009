@@ -2,6 +2,7 @@
 const express = require("express")
 const router = express.Router()
 const redirectLogin = (req,res,next) => req.app.locals.redirectLogin(req,res,next);
+const { check, validationResult } = require('express-validator');
 
 
 const bcrypt = require('bcrypt')
@@ -34,12 +35,25 @@ router.get('/audit', redirectLogin, function(req, res, next) {
 });
 
 
-router.post('/registered', function (req, res, next) {
-    const username = req.body.username;
-    const first = req.body.first;
-    const last = req.body.last;
-    const email = req.body.email;
-    const plainPassword = req.body.password
+router.post('/registered',
+    [
+    check(`first`).notEmpty(), 
+    check(`last`).notEmpty(),
+    check(`email`).isEmail(),
+    check(`username`).isLength({min: 5, max:20}),
+    check(`password`).isLength({min: 8}) 
+    ], 
+     function (req, res, next) {
+        const errors = validationResult(req);
+    if(!errors.isEmpty()){
+        res.render('./register')
+    }
+    else{
+    const username = req.sanitize(req.body.username);
+    const first = req.sanitize(req.body.first);
+    const last = req.sanitize(req.body.last);
+    const email = req.sanitize(req.body.email);
+    const plainPassword = req.sanitize(req.body.password)
 
     bcrypt.hash(plainPassword, saltRounds, function(err, hashedPassword){
     if (err){
@@ -56,13 +70,13 @@ router.post('/registered', function (req, res, next) {
             return next(err);
         }
   
-    res.send(' Hello '+ req.body.first + ' '+ req.body.last +' you are now registered!  We will send an email to you at ' + req.body.email + 'Your password is: '+ req.body.password +' and your hashed password is ' + hashedPassword);                                                       
+    res.send(' Hello '+ first + ' '+ last +' you are now registered!  We will send an email to you at ' + email + 'Your password is: '+ plainPassword +' and your hashed password is ' + hashedPassword);                                                       
          });                        
     }); 
-});
+}});
 
 router.post('/loggedin', function (req,res,next){
-    const username = req.body.username;
+    const username = req.sanitize(req.body.username);
     let sqlquery = "SELECT hashedPassword FROM users where username = ?"
 
     db.query(sqlquery, [username], (err,result) => {

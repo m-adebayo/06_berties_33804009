@@ -39,3 +39,13 @@ Week 8 saw an update of ensuring that a user has logged in before accessing spec
 - Audit Log
 - User List
 - Adding a book
+
+I also added validation on the following pages:
+- Login
+  - Ensure that the entered password is 8 characters
+  - Ensure that the first and last name arent empty
+  - Ensure that the email is in email format
+  - Ensure that the username is 5 letters
+  - If any of these fails, the registration form shall re-render.
+
+  Finally, I added sanitization to the forms for adding a book, and for registration/login.This blocks potiential XSS attacks.

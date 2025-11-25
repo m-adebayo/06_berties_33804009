@@ -5,6 +5,7 @@ const path = require('path')
 var mysql = require('mysql2');
 var session = require('express-session')
 require('dotenv').config();
+const expressSanitizer = require('express-sanitizer')
 
 // Create the express application object
 const app = express()
@@ -15,6 +16,8 @@ app.set('view engine', 'ejs')
 
 // Set up the body parser 
 app.use(express.urlencoded({ extended: true }))
+
+app.use(expressSanitizer());
 
 // Set up public folder (for css and static js)
 app.use(express.static(path.join(__dirname, 'public')))
