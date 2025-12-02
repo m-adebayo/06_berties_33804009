@@ -49,3 +49,14 @@ I also added validation on the following pages:
   - If any of these fails, the registration form shall re-render.
 
   Finally, I added sanitization to the forms for adding a book, and for registration/login.This blocks potiential XSS attacks.
+
+Week 9 I added the weather forecast, using an API.
+I did this by:
+- Generating an API key
+- Initialising the API key
+- Pulling out each relevant property of the weather object
+
+I then used this to accept user inputs on different cities and produce an output based on the users search result. 
+Finally I provided my page as an API, which allows other people to utilise data from my page. The data is stored in a JSON format, allowing for users to see each book as an object with the properties id, name, price and author. 
+The API can also be searched through, by using link ../api/books?search=(userSearch), where (userSearch) is a term the user is searching for.
+Another method of search I have added is throught the minimum price and maximum price. If the user searches http://localhost:8000/api/books?minprice=10&maxprice=30, it will show books between 10 and 30 pounds.
