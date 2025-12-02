@@ -10,7 +10,7 @@ router.get('/search',function(req, res, next){
 
 
 router.get('/search-result', function (req, res, next) {
-    let keyword = req.sanitize(req.query.keyword).escape();
+    let keyword = req.sanitize(req.query.keyword);
     let sqlquery = "SELECT * FROM books WHERE name LIKE ?";
     let searchTerm = '%' + keyword + '%'; // matches any book containing the keyword
     
@@ -52,7 +52,7 @@ router.post('/bookadded',
     // saving data in database
     let sqlquery = "INSERT INTO books (name, price,author) VALUES (?,?,?)"
     // execute sql query
-    let newrecord = [req.sanitize(req.body.name).escape(), req.sanitize(req.body.price).escape(), req.sanitize(req.body.author).escape()]
+    let newrecord = [req.sanitize(req.body.name), req.sanitize(req.body.price), req.sanitize(req.body.author)]
     db.query(sqlquery, newrecord, (err, result) => {
         if (err) {
             next(err)

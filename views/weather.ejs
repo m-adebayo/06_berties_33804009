@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Weather</title>
+    <style>
+        body {
+            background: #f1f8ff;
+            font-family: Arial, sans-serif;
+            padding: 30px;
+        }
+        .card {
+            background: white;
+            max-width: 450px;
+            margin: auto;
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 0 12px rgba(0,0,0,0.1);
+        }
+        h1 {
+            text-align: center;
+            color: #0077cc;
+        }
+        .label {
+            font-weight: bold;
+        }
+        a {
+            color: #0077cc;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="card">
+    <h1>Weather Checker</h1>
+
+    <!-- Form to enter city -->
+    <form method="POST" action="/weather">
+        <label for="city">Enter City:</label>
+        <input type="text" name="city" id="city" placeholder="e.g., London" required>
+        <button type="submit">Check Weather</button>
+    </form>
+
+    <% if (city) { %>
+        <hr>
+        <h2>Weather in <%= city %></h2>
+        <p><span class="label">Temperature:</span> <%= temp %>°C</p>
+        <p><span class="label">Description:</span> <%= description %></p>
+        <p><span class="label">Humidity:</span> <%= humidity %>%</p>
+        <p><span class="label">Wind Speed:</span> <%= windSpeed %> m/s</p>
+        <p><span class="label">Wind Direction:</span> <%= windDeg %>°</p>
+    <% } %>
+
+    <br>
+    <a href="/">Return Home</a>
+</div>
+
+</body>
+</html>
