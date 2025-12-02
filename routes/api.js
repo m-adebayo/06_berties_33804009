@@ -11,7 +11,7 @@ router.get('/books', (req, res, next) => {
     let params = [];
    
     if (search) {
-        conditions.push("book_name LIKE ?");
+        conditions.push("name LIKE ?");
         params.push(`%${search}%`);
     }
 
